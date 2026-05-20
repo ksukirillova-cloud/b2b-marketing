@@ -30,7 +30,7 @@ export function HookStatSection() {
           className="text-xl lg:text-2xl text-gray-800 leading-relaxed mb-6"
         >
 <span className="font-semibold">
-  63% компаний в России планируют увеличить маркетинговые бюджеты в 2026 году
+  63% компаний в России планируют увеличить маркетинговый бюджет в 2026 году
 </span>
 
 <br />

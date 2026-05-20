@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconChartBar, IconTrendingUp, IconTarget } from '@tabler/icons-react'
-import { GradientMeshBackground, StaggeredContainer, StaggeredItem, GlassCard, WaveDivider } from '@/components/marketing/animations'
+import { GradientMeshBackground, StaggeredContainer, StaggeredItem, GlassCard } from '@/components/marketing/animations'
 import { Button } from '@/components/ui/button'
 
 const filters = ['Все', 'B2B', 'IT и оборудование', 'Healthtech']
@@ -138,7 +138,6 @@ export default function KeysPage() {
           </motion.div>
         </div>
 
-        <WaveDivider darkToLight={true} />
       </section>
 
       {/* Cases Grid */}
