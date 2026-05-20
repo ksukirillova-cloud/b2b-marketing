@@ -37,7 +37,7 @@ export function HeroSection() {
 
             {/* Main headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] tracking-tighter mb-6">
-              <TextReveal text="Маркетинг от тех, кто вас уже знает." />
+              <TextReveal text="Маркетинг от тех, кто ваc знает" />
             </h1>
 
             {/* Subheadline */}
@@ -47,7 +47,7 @@ export function HeroSection() {
               transition={{ delay: 0.8, duration: 0.6 }}
               className="text-lg lg:text-xl text-white/60 leading-relaxed mb-8 max-w-lg"
             >
-              Сайты, реклама и продвижение для розницы, складов и B2B. Вы не будете платить за то, чтобы мы разобрались в вашем рынке.
+              Сайты, реклама и продвижение для розницы, складов и B2B. Вы не будете платить за то, чтобы мы разобрались в вашем рынке
             </motion.p>
 
             {/* CTA buttons */}

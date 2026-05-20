@@ -4,10 +4,26 @@ import { motion } from 'framer-motion'
 import { AnimatedCounter, StaggeredContainer, StaggeredItem } from '../animations'
 
 const stats = [
-  { value: 11, suffix: ' лет', label: 'в маркетинге B2B и розницы' },
-  { value: 2009, suffix: '', label: 'работаем в этом рынке' },
-  { value: 2, suffix: '×', label: 'быстрее за счёт AI-инструментов' },
-  { value: 0, suffix: '', label: 'менеджеров между вами и командой' },
+  {
+    value: 11,
+    suffix: ' лет',
+    label: 'в маркетинге B2B и розницы',
+  },
+  {
+    value: 15,
+    suffix: ' лет',
+    label: 'в B2B-продажах и торговом оборудовании',
+  },
+  {
+    value: 2,
+    suffix: '×',
+    label: 'быстрее за счёт AI-инструментов',
+  },
+  {
+    value: 0,
+    suffix: ' звеньев',
+    label: 'между вами и теми, кто делает работу',
+  },
 ]
 
 export function StatsSection() {
