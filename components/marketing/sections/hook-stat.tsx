@@ -18,7 +18,7 @@ export function HookStatSection() {
           className="mb-8"
         >
           <span className="text-8xl lg:text-[12rem] font-bold text-[var(--marketing-accent-light)] leading-none">
-            <AnimatedCounter value={61} suffix="%" duration={2.5} />
+            <AnimatedCounter value={63} suffix="%" duration={2.5} />
           </span>
         </motion.div>
 
@@ -29,7 +29,15 @@ export function HookStatSection() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-xl lg:text-2xl text-gray-800 leading-relaxed mb-6"
         >
-          <span className="font-semibold">61% малого и среднего бизнеса</span> в России не имеет системного маркетинга. Большинство из них закроется в течение 5 лет — не потому что плохой продукт, а потому что о нём никто не знает.
+<span className="font-semibold">
+  63% компаний в России планируют увеличить маркетинговые бюджеты в 2026 году
+</span>
+
+<br />
+<br />
+
+Но рост бюджета сам по себе не решает проблему. Если сайт, реклама, аналитика и продажи живут отдельно, компания тратит больше — но всё ещё не понимает, где теряются заявки и деньги.
+
         </motion.p>
 
         <motion.p
@@ -39,7 +47,7 @@ export function HookStatSection() {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-sm text-gray-500 mb-10"
         >
-          По данным исследования «Опора России» и Яндекс.Бизнес, 2023
+          По данным исследования Dинамика, FAVES Communications и Московской ТПП, 2025
         </motion.p>
 
         <motion.div
@@ -54,7 +62,7 @@ export function HookStatSection() {
             className="bg-[var(--marketing-accent-light)] text-white hover:bg-[var(--marketing-accent-light)]/90 font-semibold text-base h-14 px-8"
           >
             <Link href="/marketing/kontakty">
-              Проверить свой маркетинг
+              Проверить, где теряются деньги
               <IconArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </Button>
