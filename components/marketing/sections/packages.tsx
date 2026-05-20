@@ -2,48 +2,49 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { IconCheck, IconArrowRight, IconStar } from '@tabler/icons-react'
+import { IconArrowRight } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
 import { StaggeredContainer, StaggeredItem } from '../animations'
 
-const packages = [
+const directions = [
   {
-    name: 'Диагностика',
-    price: '25 000 ₽',
-    description: 'Разберём где вы теряете клиентов и что делать в первую очередь',
-    features: [
-      'Аудит текущего маркетинга',
-      'Анализ конкурентов',
-      'Карта точек роста',
-      'План действий на 3 месяца',
-    ],
-    popular: false,
+    label: 'Сайты и SEO',
+    title: 'Сайт есть — но он не продаёт',
+    description: 'Лендинги, каталоги, интернет-магазины, SEO и гео-продвижение под ваш рынок.',
+    href: '/marketing/uslugi#sites-seo',
+    featured: false,
   },
   {
-    name: 'Система',
-    price: '60 000 ₽',
-    description: 'Выстроим маркетинговую систему, которая работает предсказуемо',
-    features: [
-      'Всё из «Диагностики»',
-      'Настройка аналитики',
-      'Запуск 1-го канала трафика',
-      'Месяц сопровождения',
-      'Еженедельные отчёты',
-    ],
-    popular: true,
+    label: 'Трафик и реклама',
+    title: 'Деньги на рекламу уходят — заявок нет',
+    description:
+      'Яндекс Директ, Авито, карты, посевы, таргет, инфлюенсеры. Ведём только те каналы, где есть ваша аудитория.',
+    href: '/marketing/uslugi#traffic',
+    featured: false,
   },
   {
-    name: 'Под ключ',
-    price: '150 000 ₽',
-    description: 'Возьмём маркетинг полностью на себя — от стратегии до результата',
-    features: [
-      'Всё из «Системы»',
-      'Разработка/редизайн сайта',
-      '3 канала трафика',
-      '3 месяца сопровождения',
-      'Ежедневная коммуникация',
-    ],
-    popular: false,
+    label: 'Контент',
+    title: 'Соцсети мёртвые, клиенту нечего показать',
+    description:
+      'Telegram, ВКонтакте, email, тексты, визуал. Делаем контент, который помогает продавать, а не просто закрывает план публикаций.',
+    href: '/marketing/uslugi#content',
+    featured: false,
+  },
+  {
+    label: 'Маркетплейсы',
+    title: 'Карточки есть — продаж нет',
+    description:
+      'Оформление, SEO карточек, фотосъёмка, инфографика. Для WB, Ozon и Яндекс Маркета.',
+    href: '/marketing/uslugi#marketplaces',
+    featured: false,
+  },
+  {
+    label: 'Стратегия',
+    title: 'Не понимаю, что работает и куда вкладывать',
+    description:
+      'Диагностика, позиционирование, аналитика, план продвижения. Начинаем отсюда, если сейчас всё разрозненно.',
+    href: '/marketing/uslugi#strategy',
+    featured: true,
   },
 ]
 
@@ -56,59 +57,92 @@ export function PackagesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 lg:mb-16"
+          className="max-w-3xl mx-auto text-center mb-12 lg:mb-16"
         >
           <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Выберите с чего начать
+            Выберите, что болит сильнее всего
           </h2>
+          <p className="text-base lg:text-lg text-gray-600">
+            Не нужно сразу покупать «маркетинг под ключ». Начните с той точки, где сейчас
+            теряются заявки, деньги или время.
+          </p>
         </motion.div>
 
-        <StaggeredContainer className="grid md:grid-cols-3 gap-6 lg:gap-8" delay={0.15}>
-          {packages.map((pkg, i) => (
-            <StaggeredItem key={i}>
-              <div className={`relative bg-white rounded-3xl p-8 shadow-lg shadow-black/5 h-full flex flex-col ${pkg.popular ? 'ring-2 ring-[var(--marketing-accent-light)]' : ''}`}>
-                {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-[var(--marketing-accent-light)] text-white text-sm font-medium">
-                      <IconStar className="w-4 h-4" />
-                      Популярный
-                    </span>
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-                  <p className="text-3xl lg:text-4xl font-bold text-[var(--marketing-accent-light)]">
-                    {pkg.price}
-                  </p>
-                </div>
-
-                <p className="text-gray-600 text-sm mb-6">
-                  {pkg.description}
-                </p>
-
-                <ul className="space-y-3 mb-8 flex-1">
-                  {pkg.features.map((feature, j) => (
-                    <li key={j} className="flex items-start gap-3">
-                      <IconCheck className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Button 
-                  asChild
-                  className={`w-full ${pkg.popular ? 'bg-[var(--marketing-accent-light)] text-white hover:bg-[var(--marketing-accent-light)]/90' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+        <StaggeredContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" delay={0.15}>
+          {directions.map((item) => (
+            <StaggeredItem key={item.label}>
+              <Link href={item.href} className="group block h-full">
+                <div
+                  className={`relative h-full rounded-3xl p-7 lg:p-8 shadow-lg shadow-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                    item.featured
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-900'
+                  }`}
                 >
-                  <Link href="/marketing/kontakty">
-                    Выбрать
-                    <IconArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </Button>
-              </div>
+                  <div
+                    className={`inline-flex rounded-full px-3 py-1 text-xs font-medium mb-6 ${
+                      item.featured
+                        ? 'bg-white/10 text-white'
+                        : 'bg-[var(--marketing-accent-light)]/10 text-[var(--marketing-accent-light)]'
+                    }`}
+                  >
+                    {item.label}
+                  </div>
+
+                  <h3
+                    className={`text-xl lg:text-2xl font-bold leading-tight mb-4 ${
+                      item.featured ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <p
+                    className={`text-sm lg:text-base leading-relaxed mb-8 ${
+                      item.featured ? 'text-white/75' : 'text-gray-600'
+                    }`}
+                  >
+                    {item.description}
+                  </p>
+
+                  <div
+                    className={`mt-auto inline-flex items-center gap-2 text-sm font-semibold ${
+                      item.featured
+                        ? 'text-white'
+                        : 'text-[var(--marketing-accent-light)]'
+                    }`}
+                  >
+                    Смотреть услуги
+                    <IconArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
             </StaggeredItem>
           ))}
         </StaggeredContainer>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-12 lg:mt-16 rounded-3xl bg-white p-6 lg:p-8 shadow-lg shadow-black/5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+        >
+          <p className="text-lg lg:text-xl font-semibold text-gray-900">
+            Не знаете, с чего начать? Начните с диагностики — покажем, где теряются заявки
+            и что чинить в первую очередь.
+          </p>
+
+          <Button
+            asChild
+            className="bg-[var(--marketing-accent-light)] text-white hover:bg-[var(--marketing-accent-light)]/90 shrink-0"
+          >
+            <Link href="/marketing/kontakty">
+              Заказать диагностику
+              <IconArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   )
