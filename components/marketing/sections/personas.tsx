@@ -9,25 +9,25 @@ const personas = [
     role: 'Владелец оптовой компании / дистрибьютор',
     quote: '«Продажи держатся на менеджерах — уйдут они, уйдут клиенты»',
     description: 'Хочет сделать продажи предсказуемыми. Маркетинг есть, но не управляется.',
-    image: 'https://picsum.photos/seed/persona1/400/400',
+    image: '/marketing-icons/persona-opt.png',
   },
   {
     role: 'Владелец розничной сети / магазина',
     quote: '«Директ запущен, деньги уходят — заявок нет или они нецелевые»',
     description: 'Уже пробовал агентство. Остался горький осадок и слитый бюджет.',
-    image: 'https://picsum.photos/seed/persona2/400/400',
+    image: '/marketing-icons/persona-retail.png',
   },
   {
     role: 'Коммерческий директор / B2B-поставщик',
     quote: '«Не понимаю откуда реально приходят клиенты и что вообще работает»',
     description: 'Есть продажи, но нет прозрачности. Хочет управленческую отчётность по маркетингу.',
-    image: 'https://picsum.photos/seed/persona3/400/400',
+    image: '/marketing-icons/persona-analytics.png',
   },
   {
     role: 'Основатель компании по складскому оборудованию',
     quote: '«Сайт, реклама, соцсети — всё у разных, никто не видит картину целиком»',
     description: 'Хочет одного подрядчика, который отвечает за результат, а не за «свой кусок».',
-    image: 'https://picsum.photos/seed/persona4/400/400',
+    image: '/marketing-icons/persona-system.png',
   },
 ]
 
@@ -91,7 +91,7 @@ export function PersonasSection() {
         >
           <GlassCard className="text-center">
             <p className="text-white/80 text-lg">
-              Если хотя бы одно — ваше, мы знаем как это решить. И знаем ваш рынок изнутри — не изучали по кейсам, работали в нём.
+              Если хотя бы в одном пункте вы узнали себя, мы знаем, как вам помочь.
             </p>
           </GlassCard>
         </motion.div>
