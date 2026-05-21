@@ -1,267 +1,337 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { IconClock, IconCalendar, IconArrowRight } from '@tabler/icons-react'
-import { Button } from '@/components/ui/button'
-import { GradientMeshBackground, StaggeredContainer, StaggeredItem, WaveDivider } from '@/components/marketing/animations'
+import Link from "next/link"
+import { useState } from "react"
+import { motion } from "framer-motion"
 
-const filters = ['Все', 'Реклама', 'SEO', 'Контент', 'Маркетплейсы', 'Геореклама', 'AI-инструменты', 'Стратегия']
+const tags = [
+  "Все",
+  "Стратегия",
+  "Реклама",
+  "SEO",
+  "AI-инструменты",
+  "Геореклама",
+  "Контент",
+  "Маркетплейсы",
+  "Аналитика",
+] as const
 
-const articles = [
+type Tag = (typeof tags)[number]
+type ArticleTag = Exclude<Tag, "Все">
+
+type BlogPost = {
+  title: string
+  description: string
+  slug: string
+  tag: ArticleTag
+  readTime: string
+  date: string
+  image: string
+}
+
+const blogPosts: BlogPost[] = [
   {
-    id: 1,
-    title: 'Как выбрать подрядчика по маркетингу для B2B: чек-лист из 12 пунктов',
-    excerpt: 'Разбираем на что смотреть при выборе агентства или фрилансера. Какие вопросы задать и какие ответы должны насторожить.',
-    category: 'Стратегия',
-    readTime: '7 мин',
-    date: '15 апреля 2025',
-    image: 'https://picsum.photos/seed/article1/800/500',
-    featured: true,
-    slug: 'kak-vybrat-podryadchika',
+    title: "Как выбрать подрядчика по маркетингу для B2B: чек-лист из 12 пунктов",
+    description:
+      "Разбираем, на что смотреть при выборе агентства или фрилансера. Какие вопросы задать и какие ответы должны насторожить.",
+    slug: "kak-vybrat-podryadchika",
+    tag: "Стратегия",
+    readTime: "7 мин",
+    date: "18 апреля 2026",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
   },
   {
-    id: 2,
-    title: '5 ошибок в Яндекс Директе, которые сливают бюджет B2B-компаний',
-    excerpt: 'Типичные ошибки в настройке контекстной рекламы для B2B. Проверьте свои кампании по этому списку.',
-    category: 'Реклама',
-    readTime: '5 мин',
-    date: '10 апреля 2025',
-    image: 'https://picsum.photos/seed/article2/800/500',
-    featured: false,
-    slug: '5-oshibok-yandex-direct',
+    title: "5 ошибок в Яндекс Директе, которые сливают бюджет B2B-компаний",
+    description:
+      "Типичные ошибки в настройке контекстной рекламы для B2B. Проверьте свои кампании перед следующим пополнением бюджета.",
+    slug: "5-oshibok-yandex-direct",
+    tag: "Реклама",
+    readTime: "5 мин",
+    date: "10 апреля 2026",
+    image:
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 3,
-    title: 'SEO для интернет-магазина оборудования: с чего начать в 2025',
-    excerpt: 'Пошаговый план продвижения интернет-магазина в Яндексе. От технического аудита до контент-стратегии.',
-    category: 'SEO',
-    readTime: '10 мин',
-    date: '5 апреля 2025',
-    image: 'https://picsum.photos/seed/article3/800/500',
-    featured: false,
-    slug: 'seo-dlya-magazina',
+    title: "SEO для интернет-магазина оборудования: с чего начать в 2026",
+    description:
+      "Пошаговый план продвижения интернет-магазина в Яндексе: от технического аудита до структуры каталога и коммерческих страниц.",
+    slug: "seo-dlya-magazina",
+    tag: "SEO",
+    readTime: "10 мин",
+    date: "5 апреля 2026",
+    image:
+      "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 4,
-    title: 'AI в маркетинге: какие инструменты реально работают в 2025',
-    excerpt: 'Обзор AI-инструментов для маркетинга: что используем сами и что рекомендуем клиентам.',
-    category: 'AI-инструменты',
-    readTime: '8 мин',
-    date: '1 апреля 2025',
-    image: 'https://picsum.photos/seed/article4/800/500',
-    featured: false,
-    slug: 'ai-v-marketinge',
+    title: "AI в маркетинге: какие инструменты реально работают в 2026",
+    description:
+      "Обзор AI-инструментов для маркетинга: что использовать в работе, где они ускоряют процессы, а где пока нужен ручной контроль.",
+    slug: "ai-v-marketinge",
+    tag: "AI-инструменты",
+    readTime: "8 мин",
+    date: "1 апреля 2026",
+    image:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 5,
-    title: 'Как продвигать компанию в Яндекс Картах: полное руководство',
-    excerpt: 'Геореклама для розничного бизнеса. Как настроить карточку и получать клиентов из своего района.',
-    category: 'Геореклама',
-    readTime: '12 мин',
-    date: '25 марта 2025',
-    image: 'https://picsum.photos/seed/article5/800/500',
-    featured: false,
-    slug: 'prodvizhenie-yandex-karty',
+    title: "Как продвигать компанию в Яндекс Картах: полное руководство",
+    description:
+      "Геореклама для розничного бизнеса. Как настроить карточку, собрать отзывы и получать клиентов из локального поиска.",
+    slug: "prodvizhenie-yandex-karty",
+    tag: "Геореклама",
+    readTime: "12 мин",
+    date: "25 марта 2026",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 6,
-    title: 'Контент-план для B2B-компании: шаблон и примеры',
-    excerpt: 'Как составить контент-план, который работает на продажи. Шаблон + примеры для разных ниш.',
-    category: 'Контент',
-    readTime: '6 мин',
-    date: '20 марта 2025',
-    image: 'https://picsum.photos/seed/article6/800/500',
-    featured: false,
-    slug: 'kontent-plan-b2b',
+    title: "Контент-план для B2B-компании: шаблон и примеры",
+    description:
+      "Как составить контент-план, который работает на продажи. Шаблон, структура рубрик и примеры для разных ниш B2B.",
+    slug: "kontent-plan-b2b",
+    tag: "Контент",
+    readTime: "6 мин",
+    date: "20 марта 2026",
+    image:
+      "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 7,
-    title: 'Продвижение на Wildberries для производителей оборудования',
-    excerpt: 'Особенности работы с маркетплейсами в B2B-сегменте. Кому подходит и как начать.',
-    category: 'Маркетплейсы',
-    readTime: '9 мин',
-    date: '15 марта 2025',
-    image: 'https://picsum.photos/seed/article7/800/500',
-    featured: false,
-    slug: 'wildberries-oborudovanie',
+    title: "Продвижение на Wildberries для производителей оборудования",
+    description:
+      "Особенности работы с маркетплейсами в B2B-сегменте. Кому подходит, какие риски учесть и с чего начать.",
+    slug: "wildberries-oborudovanie",
+    tag: "Маркетплейсы",
+    readTime: "9 мин",
+    date: "15 марта 2026",
+    image:
+      "https://images.unsplash.com/photo-1473773508845-188df298d2d1?auto=format&fit=crop&w=900&q=80",
   },
   {
-    id: 8,
-    title: 'Как измерять эффективность маркетинга в B2B',
-    excerpt: 'Какие метрики отслеживать и как настроить сквозную аналитику для длинного цикла сделки.',
-    category: 'Стратегия',
-    readTime: '11 мин',
-    date: '10 марта 2025',
-    image: 'https://picsum.photos/seed/article8/800/500',
-    featured: false,
-    slug: 'effektivnost-marketinga-b2b',
+    title: "Как измерять эффективность маркетинга в B2B",
+    description:
+      "Какие метрики отслеживать и как настроить связную аналитику для длинного цикла сделки: от заявки до продажи.",
+    slug: "effektivnost-marketinga-b2b",
+    tag: "Аналитика",
+    readTime: "11 мин",
+    date: "10 марта 2026",
+    image:
+      "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=900&q=80",
   },
 ]
 
 export default function BlogPage() {
-  const [activeFilter, setActiveFilter] = useState('Все')
+  const [activeTag, setActiveTag] = useState<Tag>("Все")
 
-  const filteredArticles = articles.filter(
-    (article) => activeFilter === 'Все' || article.category === activeFilter
-  )
+  const filteredPosts =
+    activeTag === "Все"
+      ? blogPosts
+      : blogPosts.filter((post) => post.tag === activeTag)
 
-  const featuredArticle = filteredArticles.find((a) => a.featured)
-  const regularArticles = filteredArticles.filter((a) => !a.featured)
+  const featuredPost = filteredPosts[0]
+  const regularPosts = filteredPosts.slice(1)
 
   return (
-    <>
-      {/* Hero Section */}
-      <section className="relative bg-[var(--marketing-dark)] pt-28 lg:pt-36 pb-20 lg:pb-32 overflow-hidden">
-        <GradientMeshBackground />
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
+    <main className="min-h-screen bg-[#F7F4EF] text-[#0B1220]">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-black/95 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1380px] items-center justify-between px-6 py-5 lg:px-10">
+          <div className="flex items-center gap-10">
+            <Link
+              href="/"
+              className="hidden text-sm text-white/40 transition hover:text-white md:block"
+            >
+              ← scan-lite.ru
+            </Link>
+
+            <Link href="/marketing" className="leading-none">
+              <div className="text-2xl font-bold tracking-tight text-white">
+                Сканлайт Маркетинг
+              </div>
+              <div className="mt-1 text-xs font-medium text-white/35">
+                от команды scan-lite.ru
+              </div>
+            </Link>
+          </div>
+
+          <nav className="hidden items-center gap-2 lg:flex">
+            {[
+              { label: "Услуги", href: "/marketing/uslugi" },
+              { label: "Кейсы", href: "/marketing/keys" },
+              { label: "Кто мы", href: "/marketing/o-nas" },
+              { label: "Блог", href: "/marketing/blog", active: true },
+              { label: "Контакты", href: "/marketing/kontakty" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`rounded-2xl px-5 py-3 text-sm font-bold transition ${
+                  item.active
+                    ? "bg-white/10 text-[#B6FF00]"
+                    : "text-white/55 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <Link
+            href="/marketing/kontakty"
+            className="rounded-2xl bg-[#B6FF00] px-7 py-4 text-sm font-bold text-black transition hover:scale-[1.03] hover:bg-[#C8FF35]"
           >
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Получить диагностику
+          </Link>
+        </div>
+      </header>
+
+      <section className="relative overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(116,0,255,.35),transparent_35%),radial-gradient(circle_at_85%_25%,rgba(0,255,170,.22),transparent_35%)]" />
+
+        <div className="relative mx-auto max-w-[1380px] px-6 pb-20 pt-24 lg:px-10 lg:pb-24 lg:pt-28">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="max-w-4xl"
+          >
+            <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl">
               Статьи и разборы
             </h1>
-            <p className="text-lg lg:text-xl text-white/60 leading-relaxed">
-              Про маркетинг для розницы, складов и B2B. Без воды — только то, что работает.
+
+            <p className="mt-8 max-w-3xl text-xl font-medium leading-relaxed text-white/55 md:text-2xl">
+              Про маркетинг для розницы, складов и B2B. Без воды — только то,
+              что помогает привлекать заявки, считать деньги и управлять
+              продвижением.
             </p>
           </motion.div>
 
-          {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-12 flex flex-wrap gap-2"
-          >
-            {filters.map((filter) => (
-              <Button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                variant={activeFilter === filter ? 'default' : 'outline'}
-                size="sm"
-                className={activeFilter === filter 
-                  ? 'bg-[var(--marketing-accent)] text-[var(--marketing-dark)] hover:bg-[var(--marketing-accent)]/90'
-                  : 'border-white/20 text-white hover:bg-white/5'
-                }
+          <div className="mt-14 flex flex-wrap gap-3">
+            {tags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setActiveTag(tag)}
+                className={`rounded-2xl px-5 py-3 text-sm font-bold transition ${
+                  activeTag === tag
+                    ? "bg-[#B6FF00] text-black shadow-[0_0_30px_rgba(182,255,0,.35)]"
+                    : "bg-white text-black/75 hover:bg-[#B6FF00] hover:text-black"
+                }`}
               >
-                {filter}
-              </Button>
+                {tag}
+              </button>
             ))}
-          </motion.div>
+          </div>
         </div>
-
-        <WaveDivider darkToLight={true} />
       </section>
 
-      {/* Articles Grid */}
-      <section className="relative bg-[var(--marketing-light)] py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFilter}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+      <section className="mx-auto max-w-[1240px] px-6 py-16 lg:px-10 lg:py-20">
+        {featuredPost ? (
+          <motion.article
+            key={featuredPost.slug}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="overflow-hidden rounded-[28px] bg-white shadow-[0_20px_60px_rgba(15,23,42,.10)]"
+          >
+            <Link
+              href={`/marketing/blog/${featuredPost.slug}`}
+              className="grid lg:grid-cols-[1fr_1fr]"
             >
-              {/* Featured Article */}
-              {featuredArticle && (
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mb-12"
-                >
-                  <Link href={`/marketing/blog/${featuredArticle.slug}`} className="group block">
-                    <div className="bg-white rounded-3xl overflow-hidden shadow-lg shadow-black/5 hover:shadow-xl transition-shadow">
-                      <div className="grid lg:grid-cols-2 gap-0">
-                        <div className="aspect-video lg:aspect-auto lg:h-full bg-gray-100">
-                          <Image
-                            src={featuredArticle.image}
-                            alt={featuredArticle.title}
-                            width={800}
-                            height={500}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                        <div className="p-8 lg:p-12 flex flex-col justify-center">
-                          <div className="flex items-center gap-4 mb-4">
-                            <span className="px-3 py-1 rounded-full bg-[var(--marketing-accent-light)]/10 text-[var(--marketing-accent-light)] text-sm font-medium">
-                              {featuredArticle.category}
-                            </span>
-                            <span className="text-gray-400 text-sm flex items-center gap-1">
-                              <IconClock className="w-4 h-4" />
-                              {featuredArticle.readTime}
-                            </span>
-                          </div>
-                          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 group-hover:text-[var(--marketing-accent-light)] transition-colors">
-                            {featuredArticle.title}
-                          </h2>
-                          <p className="text-gray-600 mb-6">
-                            {featuredArticle.excerpt}
-                          </p>
-                          <div className="flex items-center gap-2 text-[var(--marketing-accent-light)] font-medium">
-                            Читать статью
-                            <IconArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              )}
+              <div className="relative h-[320px] overflow-hidden lg:h-[360px]">
+                <img
+                  src={featuredPost.image}
+                  alt={featuredPost.title}
+                  className="h-full w-full object-cover transition duration-700 hover:scale-105"
+                />
+              </div>
 
-              {/* Article Grid */}
-              <StaggeredContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" delay={0.1}>
-                {regularArticles.map((article) => (
-                  <StaggeredItem key={article.id}>
-                    <Link href={`/marketing/blog/${article.slug}`} className="group block h-full">
-                      <div className="bg-white rounded-2xl overflow-hidden shadow-lg shadow-black/5 h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        <div className="aspect-video overflow-hidden bg-gray-100">
-                          <Image
-                            src={article.image}
-                            alt={article.title}
-                            width={800}
-                            height={500}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                        <div className="p-6">
-                          <div className="flex items-center gap-3 mb-3">
-                            <span className="px-2 py-1 rounded-md bg-[var(--marketing-accent-light)]/10 text-[var(--marketing-accent-light)] text-xs font-medium">
-                              {article.category}
-                            </span>
-                            <span className="text-gray-400 text-xs flex items-center gap-1">
-                              <IconClock className="w-3 h-3" />
-                              {article.readTime}
-                            </span>
-                          </div>
-                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[var(--marketing-accent-light)] transition-colors line-clamp-2">
-                            {article.title}
-                          </h3>
-                          <p className="text-gray-600 text-sm line-clamp-2">
-                            {article.excerpt}
-                          </p>
-                          <div className="mt-4 flex items-center gap-1 text-gray-400 text-xs">
-                            <IconCalendar className="w-3 h-3" />
-                            {article.date}
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </StaggeredItem>
-                ))}
-              </StaggeredContainer>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              <div className="flex flex-col justify-center p-8 md:p-12">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-[#FFF1EA] px-3 py-1 text-xs font-bold text-[#FF4B1F]">
+                    {featuredPost.tag}
+                  </span>
+                  <span className="text-sm font-bold text-slate-400">
+                    ⏱ {featuredPost.readTime}
+                  </span>
+                </div>
+
+                <h2 className="mt-6 text-3xl font-bold leading-tight tracking-tight text-slate-950 md:text-4xl">
+                  {featuredPost.title}
+                </h2>
+
+                <p className="mt-5 text-lg leading-relaxed text-slate-600">
+                  {featuredPost.description}
+                </p>
+
+                <div className="mt-7 flex items-center justify-between gap-4">
+                  <span className="text-base font-bold text-[#FF4B1F]">
+                    Читать статью →
+                  </span>
+
+                  <span className="text-sm font-bold text-slate-400">
+                    {featuredPost.date}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </motion.article>
+        ) : (
+          <div className="rounded-[28px] bg-white p-10 text-center shadow-[0_20px_60px_rgba(15,23,42,.08)]">
+            <p className="text-lg font-bold text-slate-600">
+              В этой категории пока нет статей.
+            </p>
+          </div>
+        )}
+
+        {regularPosts.length > 0 && (
+          <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            {regularPosts.map((post, index) => (
+              <motion.article
+                key={post.slug}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.04 }}
+                className="group overflow-hidden rounded-[24px] bg-white shadow-[0_16px_48px_rgba(15,23,42,.08)] transition hover:-translate-y-1 hover:shadow-[0_22px_70px_rgba(15,23,42,.12)]"
+              >
+                <Link href={`/marketing/blog/${post.slug}`}>
+                  <div className="h-[220px] overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="p-7">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="rounded-full bg-[#FFF1EA] px-3 py-1 text-xs font-bold text-[#FF4B1F]">
+                        {post.tag}
+                      </span>
+                      <span className="text-xs font-bold text-slate-400">
+                        ⏱ {post.readTime}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-5 text-xl font-bold leading-snug tracking-tight text-slate-950 group-hover:text-[#FF4B1F]">
+                      {post.title}
+                    </h3>
+
+                    <div className="mt-7 flex items-center justify-between gap-4">
+                      <span className="text-sm font-bold text-[#FF4B1F]">
+                        Читать →
+                      </span>
+
+                      <span className="text-xs font-bold text-slate-400">
+                        {post.date}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+        )}
       </section>
-    </>
+    </main>
   )
 }
