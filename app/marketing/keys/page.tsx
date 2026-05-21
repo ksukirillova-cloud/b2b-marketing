@@ -1,227 +1,448 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { IconChartBar, IconTrendingUp, IconTarget } from '@tabler/icons-react'
-import { GradientMeshBackground, StaggeredContainer, StaggeredItem, GlassCard } from '@/components/marketing/animations'
-import { Button } from '@/components/ui/button'
+import Link from "next/link"
+import { useState } from "react"
+import { motion } from "framer-motion"
 
-const filters = ['Все', 'B2B', 'IT и оборудование', 'Healthtech']
+type CaseItem = {
+  slug: string
+  title: string
+  category: string
+  sphere: string
+  description: string
+  results: string[]
+  tags: string[]
+  categories: string[]
+  gradient: string
+}
 
-const cases = [
+type PrincipleItem = {
+  title: string
+  text: string
+}
+
+const filters = [
+  "Все",
+  "Сайты",
+  "AI-автоматизация",
+  "B2B",
+  "Оборудование",
+  "Реклама",
+  "Маркетплейсы",
+] as const
+
+type Filter = (typeof filters)[number]
+
+const cases: CaseItem[] = [
   {
-    id: 1,
-    title: 'Рост ROI до 1900% для промышленного производителя',
-    industry: 'B2B промышленность',
-    category: 'B2B',
-    mainMetric: 'ROI 1900%',
-    metrics: [
-      { label: 'Рост выручки', value: '+340%' },
-      { label: 'Стоимость лида', value: '-65%' },
-      { label: 'Конверсия сайта', value: '+180%' },
+    slug: "scanlite-site",
+    title: "Сайт Сканлайт: современный интернет-магазин вместо непродающего сайта",
+    category: "Сайты / оборудование",
+    sphere: "Торгово-кассовое оборудование",
+    description:
+      "Пересобрали сайт под рынок оборудования: структура, карточки, коммерческие блоки, логика заявки и SEO-основа.",
+    results: [
+      "каталог стал понятнее для покупателей",
+      "появилась база для SEO-продвижения",
+      "путь до заявки стал короче",
     ],
-    description: 'Производитель промышленного оборудования обратился с проблемой: реклама работает, но продажи не растут. После аудита выяснили, что 70% бюджета уходит на нецелевые запросы. Перестроили структуру кампаний, переписали объявления под конкретные сегменты, настроили сквозную аналитику.',
-    result: 'За 4 месяца ROI вырос с 200% до 1900%. Клиент масштабировал бюджет в 3 раза.',
-    image: 'https://picsum.photos/seed/case-b2b-1/800/400',
+    tags: ["каталог", "SEO", "заявки"],
+    categories: ["Сайты", "Оборудование", "B2B"],
+    gradient:
+      "radial-gradient(circle at 20% 20%, rgba(182,255,0,.32), transparent 30%), radial-gradient(circle at 85% 85%, rgba(255,75,31,.20), transparent 34%), #0B1220",
   },
   {
-    id: 2,
-    title: '50% высокочастотных запросов в топ-10 за 6 месяцев',
-    industry: 'IT / Оборудование',
-    category: 'IT и оборудование',
-    mainMetric: 'Топ-10 по 50% ВЧ',
-    metrics: [
-      { label: 'Органический трафик', value: '+420%' },
-      { label: 'Запросов в топ-10', value: '147' },
-      { label: 'Позиции по брендам', value: 'Топ-3' },
+    slug: "ai-automation-platform",
+    title: "Платформа автоматизации: заявки, контент и рутинные процессы через AI",
+    category: "AI / автоматизация",
+    sphere: "Маркетинг и продажи",
+    description:
+      "Собрали логику автоматизации для задач, которые обычно делаются руками: заявки, ответы, контент, таблицы, уведомления и отчёты.",
+    results: [
+      "меньше ручной обработки",
+      "быстрее реакция на заявки",
+      "понятная схема масштабирования",
     ],
-    description: 'Дистрибьютор IT-оборудования хотел снизить зависимость от платной рекламы. SEO-аудит показал критические технические ошибки и отсутствие контент-стратегии. Исправили техническую часть, развернули блог с экспертным контентом, оптимизировали карточки товаров.',
-    result: 'За 6 месяцев вывели 50% целевых ВЧ-запросов в топ-10 Яндекса. Органика дала 35% всех лидов.',
-    image: 'https://picsum.photos/seed/case-it-1/800/400',
+    tags: ["AI", "Make", "процессы"],
+    categories: ["AI-автоматизация", "B2B"],
+    gradient:
+      "radial-gradient(circle at 20% 20%, rgba(116,0,255,.34), transparent 32%), radial-gradient(circle at 85% 80%, rgba(182,255,0,.32), transparent 34%), #0B1220",
   },
   {
-    id: 3,
-    title: '27 квалифицированных лидов в месяц для B2B Healthtech',
-    industry: 'B2B Healthtech',
-    category: 'Healthtech',
-    mainMetric: 'CPL 1 850 ₽',
-    metrics: [
-      { label: 'Лидов в месяц', value: '27' },
-      { label: 'Конверсия в сделку', value: '18%' },
-      { label: 'Цикл сделки', value: '-30%' },
+    slug: "b2b-industrial-crm",
+    title: "B2B промышленность: CRM, база и рекламные касания без потерянных лидов",
+    category: "B2B / промышленность",
+    sphere: "Промышленный B2B",
+    description:
+      "Навели порядок в базе, CRM и повторных касаниях, чтобы лиды не терялись, а маркетинг был связан с продажами.",
+    results: [
+      "ROI 1900%",
+      "10 000 ₽ → 200 000 ₽",
+      "×3 конверсия базы",
     ],
-    description: 'Стартап в сфере медицинских B2B-решений искал способ масштабировать привлечение клиентов. Предыдущее агентство не смогло выйти на стабильный поток лидов. Разработали стратегию для сложного B2B-цикла, настроили многоуровневую воронку, запустили ретаргетинг.',
-    result: 'Стабильный поток в 27 квалифицированных лидов в месяц при CPL 1 850 ₽ — в 2 раза ниже рынка.',
-    image: 'https://picsum.photos/seed/case-health-1/800/400',
+    tags: ["CRM", "Директ", "email"],
+    categories: ["B2B", "Реклама", "AI-автоматизация"],
+    gradient:
+      "radial-gradient(circle at 25% 20%, rgba(255,75,31,.26), transparent 30%), radial-gradient(circle at 85% 80%, rgba(182,255,0,.28), transparent 32%), #0B1220",
   },
   {
-    id: 4,
-    title: 'Запуск интернет-магазина складского оборудования',
-    industry: 'B2B / E-commerce',
-    category: 'B2B',
-    mainMetric: '₽2.4М/мес',
-    metrics: [
-      { label: 'Выручка в месяц', value: '2.4М ₽' },
-      { label: 'Средний чек', value: '45 000 ₽' },
-      { label: 'Повторные покупки', value: '34%' },
+    slug: "healthtech-platform",
+    title: "B2B Healthtech: упаковка нового продукта и первые лиды",
+    category: "B2B / IT",
+    sphere: "Healthtech-платформа",
+    description:
+      "Помогли объяснить рынку новый B2B-продукт: ценность, структура сайта, контент, воронки и тест спроса через рекламу.",
+    results: [
+      "первая продажа MVP",
+      "27 лидов",
+      "CPL 1 850 ₽",
     ],
-    description: 'Компания продавала складское оборудование только через менеджеров. Хотели запустить онлайн-канал. Разработали интернет-магазин с акцентом на B2B-функционал: запрос КП, личный кабинет для дилеров, интеграция с 1С.',
-    result: 'За 3 месяца после запуска — 2.4М выручки через сайт. 34% клиентов вернулись за повторной покупкой.',
-    image: 'https://picsum.photos/seed/case-b2b-2/800/400',
+    tags: ["позиционирование", "сайт", "Директ"],
+    categories: ["B2B", "Сайты", "Реклама"],
+    gradient:
+      "radial-gradient(circle at 20% 25%, rgba(0,255,170,.24), transparent 30%), radial-gradient(circle at 82% 72%, rgba(116,0,255,.30), transparent 34%), #0B1220",
   },
   {
-    id: 5,
-    title: 'Комплексное продвижение сети магазинов техники',
-    industry: 'Розница',
-    category: 'IT и оборудование',
-    mainMetric: '+85% трафика',
-    metrics: [
-      { label: 'Рост трафика', value: '+85%' },
-      { label: 'Конверсия', value: '+45%' },
-      { label: 'Стоимость заказа', value: '-28%' },
+    slug: "product-site-from-zero",
+    title: "Продуктовый сайт с нуля: от идеи до понятной страницы продаж",
+    category: "Сайты / упаковка",
+    sphere: "Новый продукт",
+    description:
+      "Собрали продуктовую страницу с нуля: кому продаём, что обещаем, как объясняем ценность и как ведём к заявке.",
+    results: [
+      "появилась понятная упаковка продукта",
+      "страница готова к тесту спроса",
+      "появилась база для рекламы",
     ],
-    description: 'Региональная сеть магазинов техники теряла долю рынка федеральным игрокам. Разработали стратегию локального продвижения: геореклама, работа с картами, таргетированная реклама на аудиторию района.',
-    result: 'Рост трафика в офлайн-точки на 85%. Снизили стоимость привлечения покупателя на 28%.',
-    image: 'https://picsum.photos/seed/case-retail-1/800/400',
+    tags: ["оффер", "структура", "CTA"],
+    categories: ["Сайты", "B2B"],
+    gradient:
+      "radial-gradient(circle at 18% 18%, rgba(182,255,0,.30), transparent 32%), radial-gradient(circle at 85% 85%, rgba(116,0,255,.24), transparent 34%), #0B1220",
+  },
+  {
+    slug: "new-direction-site",
+    title: "Сайт для нового направления: быстрый запуск и проверка спроса",
+    category: "Сайты / запуск",
+    sphere: "Новая услуга или категория",
+    description:
+      "Упаковали новое направление так, чтобы его можно было быстро вывести на рынок, запустить рекламу и понять реакцию аудитории.",
+    results: [
+      "направление получило отдельную упаковку",
+      "появилась точка входа для рекламы",
+      "клиентам стало понятнее предложение",
+    ],
+    tags: ["MVP", "гипотезы", "запуск"],
+    categories: ["Сайты", "Реклама", "B2B"],
+    gradient:
+      "radial-gradient(circle at 20% 20%, rgba(255,75,31,.24), transparent 30%), radial-gradient(circle at 80% 80%, rgba(0,255,170,.22), transparent 34%), #0B1220",
+  },
+  {
+    slug: "site-redesign",
+    title: "Редизайн сайта: из непонятной витрины в продающую структуру",
+    category: "Сайты / редизайн",
+    sphere: "B2B и услуги",
+    description:
+      "Пересобрали существующий сайт: убрали хаос, усилили оффер, добавили логику заявки и сделали страницу понятнее для клиента.",
+    results: [
+      "сайт стал понятнее и собраннее",
+      "усилилась логика заявки",
+      "оффер стал конкретнее",
+    ],
+    tags: ["редизайн", "оффер", "CTA"],
+    categories: ["Сайты", "B2B"],
+    gradient:
+      "radial-gradient(circle at 18% 20%, rgba(116,0,255,.28), transparent 32%), radial-gradient(circle at 80% 80%, rgba(255,75,31,.22), transparent 34%), #0B1220",
+  },
+  {
+    slug: "marketplace-cards",
+    title: "Карточки маркетплейсов: инфографика и упаковка товара",
+    category: "Маркетплейсы / карточки",
+    sphere: "Товары и оборудование",
+    description:
+      "Упаковали товарные карточки так, чтобы покупатель быстрее понимал состав, преимущества, сценарии использования и отличие от конкурентов.",
+    results: [
+      "карточки стали понятнее",
+      "усилилась визуальная подача товара",
+      "появились акценты для покупателя",
+    ],
+    tags: ["WB", "Ozon", "инфографика"],
+    categories: ["Маркетплейсы", "Оборудование"],
+    gradient:
+      "radial-gradient(circle at 20% 20%, rgba(182,255,0,.26), transparent 30%), radial-gradient(circle at 80% 80%, rgba(255,75,31,.24), transparent 34%), #0B1220",
   },
 ]
 
-export default function KeysPage() {
-  const [activeFilter, setActiveFilter] = useState('Все')
+const principleItems: PrincipleItem[] = [
+  {
+    title: "Показываем путь, а не только финальный экран",
+    text: "В кейсе важен не красивый результат сам по себе, а логика: какая была задача, где были слабые места, что изменили и почему именно так.",
+  },
+  {
+    title: "Связываем маркетинг с заявками и продажами",
+    text: "Сайт, реклама, контент, CRM и обработка лидов не работают отдельно. Поэтому в кейсах показываем не один инструмент, а всю связку.",
+  },
+  {
+    title: "Используем AI там, где он реально ускоряет",
+    text: "ИИ помогает быстрее анализировать, собирать черновики, автоматизировать рутину и готовить связки. Человек отвечает за стратегию, смысл и проверку.",
+  },
+]
 
-  const filteredCases = cases.filter(
-    (c) => activeFilter === 'Все' || c.category === activeFilter
-  )
+export default function CasesPage() {
+  const [activeFilter, setActiveFilter] = useState<Filter>("Все")
+
+  const filteredCases =
+    activeFilter === "Все"
+      ? cases
+      : cases.filter((item) => item.categories.includes(activeFilter))
 
   return (
-    <>
-      {/* Hero Section */}
-      <section className="relative bg-[var(--marketing-dark)] pt-28 lg:pt-36 pb-20 lg:pb-32 overflow-hidden">
-        <GradientMeshBackground />
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
+    <main className="min-h-screen bg-[#F7F4EF] text-[#0B1220]">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-black/95 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1380px] items-center justify-between px-6 py-5 lg:px-10">
+          <div className="flex items-center gap-10">
+            <Link
+              href="/"
+              className="hidden text-sm text-white/40 transition hover:text-white md:block"
+            >
+              ← scan-lite.ru
+            </Link>
+
+            <Link href="/marketing" className="leading-none">
+              <div className="text-2xl font-bold tracking-tight text-white">
+                Сканлайт Маркетинг
+              </div>
+              <div className="mt-1 text-xs font-medium text-white/35">
+                от команды scan-lite.ru
+              </div>
+            </Link>
+          </div>
+
+          <nav className="hidden items-center gap-2 lg:flex">
+            {[
+              { label: "Услуги", href: "/marketing/uslugi" },
+              { label: "Кейсы", href: "/marketing/keys", active: true },
+              { label: "Кто мы", href: "/marketing/o-nas" },
+              { label: "Блог", href: "/marketing/blog" },
+              { label: "Контакты", href: "/marketing/kontakty" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`rounded-2xl px-5 py-3 text-sm font-bold transition ${
+                  item.active
+                    ? "bg-white/10 text-[#B6FF00]"
+                    : "text-white/55 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <Link
+            href="/marketing/kontakty"
+            className="rounded-2xl bg-[#B6FF00] px-7 py-4 text-sm font-bold text-black transition hover:scale-[1.03] hover:bg-[#C8FF35]"
           >
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Реальные проекты. Реальные цифры.
+            Обсудить задачу
+          </Link>
+        </div>
+      </header>
+
+      <section className="relative overflow-hidden border-b border-black/5 bg-[#F7F4EF]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(182,255,0,.28),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(255,75,31,.13),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(116,0,255,.10),transparent_35%)]" />
+
+        <div className="relative mx-auto max-w-[1380px] px-6 py-16 lg:px-10 lg:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="max-w-6xl"
+          >
+            <div className="mb-7 inline-flex w-fit rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold text-black/60 shadow-sm">
+              Кейсы: сайты, реклама, AI и упаковка
+            </div>
+
+            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-slate-950 md:text-7xl">
+              Не просто портфолио. Показываем, какие задачи решали и что менялось
             </h1>
-            <p className="text-lg lg:text-xl text-white/60 leading-relaxed">
-              Без округлений и красивых историй. Только то, что было на самом деле.
+
+            <p className="mt-8 max-w-4xl text-xl font-medium leading-relaxed text-slate-600 md:text-2xl">
+              Сайты, каталоги, AI-автоматизация, реклама, CRM, контент и
+              маркетплейсы. Часть кейсов обезличена: без названий компаний, но
+              с логикой работ и результатами.
             </p>
           </motion.div>
 
-          {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-12 flex flex-wrap gap-3"
-          >
+          <div className="mt-10 flex flex-wrap gap-3">
             {filters.map((filter) => (
-              <Button
+              <button
                 key={filter}
+                type="button"
                 onClick={() => setActiveFilter(filter)}
-                variant={activeFilter === filter ? 'default' : 'outline'}
-                className={activeFilter === filter 
-                  ? 'bg-[var(--marketing-accent)] text-[var(--marketing-dark)] hover:bg-[var(--marketing-accent)]/90'
-                  : 'border-white/20 text-white hover:bg-white/5'
-                }
+                className={`rounded-2xl px-5 py-3 text-sm font-bold transition ${
+                  activeFilter === filter
+                    ? "bg-[#B6FF00] text-black shadow-[0_12px_30px_rgba(182,255,0,.25)]"
+                    : "bg-white text-black/65 hover:bg-[#B6FF00] hover:text-black"
+                }`}
               >
                 {filter}
-              </Button>
+              </button>
             ))}
-          </motion.div>
+          </div>
         </div>
-
       </section>
 
-      {/* Cases Grid */}
-      <section className="relative bg-[var(--marketing-light)] py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFilter}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-8"
+      <section className="mx-auto max-w-[1380px] px-6 py-12 lg:px-10 lg:py-16">
+        <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+          {filteredCases.map((item, index) => (
+            <motion.article
+              key={item.slug}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: index * 0.04 }}
+              className="group overflow-hidden rounded-[32px] border border-black/5 bg-white shadow-[0_18px_60px_rgba(15,23,42,.08)] transition hover:-translate-y-1 hover:shadow-[0_26px_80px_rgba(15,23,42,.12)]"
             >
-              {filteredCases.map((caseItem, i) => (
-                <motion.div
-                  key={caseItem.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.5 }}
-                >
-                  <div className="bg-white rounded-3xl overflow-hidden shadow-lg shadow-black/5">
-                    <div className="grid lg:grid-cols-2 gap-0">
-                      {/* Image */}
-                      <div className="aspect-video lg:aspect-auto lg:h-full bg-gray-100">
-                        <Image
-                          src={caseItem.image}
-                          alt={caseItem.title}
-                          width={800}
-                          height={400}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+              <div
+                className="relative min-h-[230px] p-7 text-white"
+                style={{ background: item.gradient }}
+              >
+                <div className="mb-5 flex flex-wrap gap-2">
+                  {item.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-bold text-white/85 backdrop-blur"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
 
-                      {/* Content */}
-                      <div className="p-6 lg:p-10">
-                        <div className="flex items-center gap-3 mb-4">
-                          <IconChartBar className="w-4 h-4 text-[var(--marketing-accent-light)]" />
-                          <span className="text-[var(--marketing-accent-light)] text-sm font-medium">
-                            {caseItem.industry}
-                          </span>
-                        </div>
-
-                        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-                          {caseItem.title}
-                        </h2>
-
-                        <div className="mb-6">
-                          <span className="text-4xl lg:text-5xl font-bold text-[var(--marketing-accent-light)]">
-                            {caseItem.mainMetric}
-                          </span>
-                        </div>
-
-                        {/* Metrics */}
-                        <div className="grid grid-cols-3 gap-4 mb-6">
-                          {caseItem.metrics.map((metric, j) => (
-                            <div key={j} className="text-center p-3 rounded-xl bg-gray-50">
-                              <p className="text-lg font-bold text-gray-900">{metric.value}</p>
-                              <p className="text-xs text-gray-500">{metric.label}</p>
-                            </div>
-                          ))}
-                        </div>
-
-                        <p className="text-gray-600 text-sm mb-4">
-                          {caseItem.description}
-                        </p>
-
-                        <div className="p-4 rounded-xl bg-green-50 border border-green-100">
-                          <div className="flex items-start gap-3">
-                            <IconTarget className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                            <p className="text-green-800 text-sm font-medium">
-                              {caseItem.result}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div className="absolute bottom-7 left-7 right-7">
+                  <div className="mb-3 inline-flex rounded-full bg-[#B6FF00] px-3 py-1 text-xs font-bold text-black">
+                    {item.category}
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+                  <div className="text-sm font-bold text-white/55">
+                    {item.sphere}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-7">
+              <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-950 transition group-hover:text-[#FF4B1F]">
+  <Link
+    href={`/marketing/keys/${item.slug}`}
+    className="transition hover:text-[#FF4B1F]"
+  >
+    {item.title}
+  </Link>
+</h2>
+
+                <p className="mt-4 text-base leading-relaxed text-slate-600">
+                  {item.description}
+                </p>
+
+                <div className="mt-6 space-y-3">
+                  {item.results.map((result) => (
+                    <div
+                      key={result}
+                      className="flex gap-3 rounded-2xl bg-[#F7F4EF] px-4 py-3"
+                    >
+                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#B6FF00]" />
+                      <span className="text-sm font-bold leading-snug text-slate-800">
+                        {result}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-7 flex items-center justify-between gap-4">
+                  <Link
+                    href={`/marketing/keys/${item.slug}`}
+                    className="rounded-2xl bg-[#0B1220] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#FF4B1F]"
+                  >
+                    Смотреть кейс
+                  </Link>
+
+                  <span className="text-sm font-bold text-slate-400">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        {filteredCases.length === 0 && (
+          <div className="rounded-[32px] bg-white p-10 text-center shadow-[0_18px_60px_rgba(15,23,42,.08)]">
+            <p className="text-lg font-bold text-slate-600">
+              В этой категории пока нет кейсов.
+            </p>
+          </div>
+        )}
+      </section>
+
+      <section className="border-y border-black/5 bg-white/60">
+        <div className="mx-auto max-w-[1240px] px-6 py-16 lg:px-10 lg:py-20">
+          <div className="mb-10 max-w-3xl">
+            <span className="text-sm font-bold uppercase tracking-[.18em] text-[#7A4DFF]">
+              Принцип
+            </span>
+            <h2 className="mt-4 text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">
+              Как мы показываем результат
+            </h2>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {principleItems.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.35, delay: index * 0.03 }}
+                className="rounded-[28px] border border-black/5 bg-white p-7 shadow-[0_16px_44px_rgba(15,23,42,.05)]"
+              >
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ECFFD2] text-lg font-bold text-black">
+                  {index + 1}
+                </div>
+
+                <h3 className="text-2xl font-bold tracking-tight text-slate-950">
+                  {item.title}
+                </h3>
+
+                <p className="mt-4 text-base leading-relaxed text-slate-600">
+                  {item.text}
+                </p>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
-    </>
+
+      <section className="mx-auto max-w-[1240px] px-6 py-16 lg:px-10 lg:py-20">
+        <div className="overflow-hidden rounded-[36px] border border-black/5 bg-white shadow-[0_24px_80px_rgba(15,23,42,.10)]">
+          <div className="grid gap-8 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <h2 className="text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">
+                Хотите похожий результат?
+              </h2>
+
+              <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
+                Оставьте заявку на бесплатный вводный разбор. Посмотрим вашу
+                ситуацию и скажем, с чего логичнее начать: сайт, реклама,
+                аналитика, упаковка или AI-автоматизация.
+              </p>
+            </div>
+
+            <Link
+              href="/marketing/kontakty"
+              className="w-fit rounded-2xl bg-[#B6FF00] px-8 py-5 text-base font-bold text-black shadow-[0_14px_40px_rgba(182,255,0,.28)] transition hover:scale-[1.03]"
+            >
+              Обсудить задачу
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   )
 }
