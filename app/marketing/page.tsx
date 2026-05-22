@@ -12,68 +12,64 @@ import { BlogSection } from '@/components/marketing/sections/blog'
 import { FinalCtaSection } from '@/components/marketing/sections/final-cta'
 import { WaveDivider, DiagonalDivider } from '@/components/marketing/animations'
 
-// Color constants
 const DARK = 'var(--marketing-dark)'
-const DARK_LIGHTER = 'var(--marketing-dark-lighter)'
 const LIGHT = 'var(--marketing-light)'
 
 export default function MarketingPage() {
   return (
     <>
-      {/* Hero (DARK) */}
+      {/* Hero */}
       <HeroSection />
-      
-      {/* Hero -> Stats: both dark, no divider needed or subtle one */}
-      
-      {/* Stats (DARK_LIGHTER) */}
+
+      {/* Stats: оставляем в той же тёмной системе, без разделителя между hero и цифрами */}
       <StatsSection />
-      
-      {/* Stats -> HookStat: dark to light */}
-      <DiagonalDivider fromColor={DARK_LIGHTER} toColor={LIGHT} />
-      
-      {/* HookStat (LIGHT) */}
+
+      {/* Stats -> HookStat */}
+      <DiagonalDivider fromColor={DARK} toColor={LIGHT} />
+
+      {/* HookStat */}
       <HookStatSection />
-      
-      {/* HookStat -> Personas: light to dark */}
+
+      {/* HookStat -> Personas */}
       <WaveDivider fromColor={LIGHT} toColor={DARK} />
-      
-      {/* Personas (DARK) */}
+
+      {/* Personas */}
       <PersonasSection />
-      
-      {/* Personas -> WhyUs: dark to light */}
+
+      {/* Personas -> WhyUs */}
       <DiagonalDivider fromColor={DARK} toColor={LIGHT} />
-      
-      {/* WhyUs (LIGHT) */}
+
+      {/* WhyUs */}
       <WhyUsSection />
-      
-      {/* WhyUs -> Cases: light to dark */}
+
+      {/* WhyUs -> Cases */}
       <WaveDivider fromColor={LIGHT} toColor={DARK} />
-      
-      {/* Cases (DARK) */}
+
+      {/* Cases */}
       <CasesSection />
-      
-      {/* Cases -> Packages: dark to light */}
+
+      {/* Cases -> Packages */}
       <DiagonalDivider fromColor={DARK} toColor={LIGHT} />
-      
-      {/* Packages (LIGHT) */}
+
+      {/* Packages */}
       <PackagesSection />
-      
-      {/* Packages -> Objections: light to dark */}
+
+      {/* Packages -> Objections */}
       <WaveDivider fromColor={LIGHT} toColor={DARK} />
-      
-      {/* Objections (DARK) */}
+
+      {/* Objections */}
       <ObjectionsSection />
-      
-      {/* Objections -> Blog: dark to light */}
+
+      {/* Objections -> Blog */}
       <DiagonalDivider fromColor={DARK} toColor={LIGHT} />
-      
-      {/* Blog (LIGHT) */}
+
+      {/* Blog */}
       <BlogSection />
-      
-      {/* Blog -> FinalCta: light to dark */}
+
+      {/* Blog -> Final CTA */}
       <WaveDivider fromColor={LIGHT} toColor={DARK} />
-      
-      {/* FinalCta (DARK) */}
+
+      {/* Final CTA */}
       <FinalCtaSection />
     </>
   )

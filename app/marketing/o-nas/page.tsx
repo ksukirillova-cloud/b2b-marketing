@@ -276,7 +276,7 @@ export default function AboutPage() {
               Команда
             </span>
             <h2 className="mt-4 text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">
-              Маленькая команда с большим опытом
+              Практики с опытом в маркетинге и продажах
             </h2>
           </div>
 
@@ -362,27 +362,43 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-6 py-16 lg:px-10 lg:py-20">
-        <div className="overflow-hidden rounded-[36px] border border-black/5 bg-white shadow-[0_24px_80px_rgba(15,23,42,.10)]">
-          <div className="grid gap-8 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <h2 className="text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">
-                Готовы познакомиться?
-              </h2>
+      <section className="relative overflow-hidden bg-[#020404] text-white">
+        <div className="absolute left-0 top-0 w-full">
+          <svg
+            className="block h-[78px] w-full"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,24 C190,68 340,72 520,45 C720,15 890,5 1080,45 C1235,78 1335,82 1440,56 L1440,0 L0,0 Z"
+              fill="#F7F4EF"
+            />
+          </svg>
+        </div>
 
-              <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
-                Запишитесь на бесплатную 30-минутную диагностику. Разберём вашу
-                ситуацию и покажем точки роста.
-              </p>
-            </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_45%,rgba(116,0,255,.22),transparent_34%),radial-gradient(circle_at_72%_45%,rgba(182,255,0,.17),transparent_32%),radial-gradient(circle_at_95%_40%,rgba(0,255,190,.12),transparent_30%)]" />
 
-            <Link
-              href="/marketing/kontakty"
-              className="w-fit rounded-2xl bg-[#B6FF00] px-8 py-5 text-base font-bold text-black shadow-[0_14px_40px_rgba(182,255,0,.28)] transition hover:scale-[1.03]"
-            >
-              Получить диагностику
-            </Link>
-          </div>
+        <div className="relative mx-auto flex min-h-[520px] max-w-[1240px] flex-col items-center justify-center px-6 py-28 text-center lg:px-10">
+          <h2 className="max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+            Начните с диагностики.
+            <span className="block text-[#B6FF00]">
+              Разберёмся за 30 минут.
+            </span>
+          </h2>
+
+          <p className="mt-8 max-w-2xl text-xl font-medium leading-relaxed text-white/55 md:text-2xl">
+            Покажем, где вы теряете клиентов прямо сейчас. Без обязательств —
+            просто честный разговор.
+          </p>
+
+          <Link
+            href="/marketing/kontakty"
+            className="mt-11 inline-flex items-center gap-4 rounded-2xl bg-[#B6FF00] px-8 py-5 text-base font-bold text-black shadow-[0_18px_50px_rgba(182,255,0,.22)] transition hover:scale-[1.03] hover:bg-[#C8FF35]"
+          >
+            Получить диагностику
+            <span className="text-xl leading-none">→</span>
+          </Link>
         </div>
       </section>
     </main>
