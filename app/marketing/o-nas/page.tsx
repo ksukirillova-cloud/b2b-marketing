@@ -385,57 +385,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-black/5 bg-[#0B1220] text-white">
-        <div className="mx-auto grid max-w-[1240px] gap-10 px-6 py-12 lg:grid-cols-[1fr_auto_auto] lg:px-10">
-          <div>
-            <div className="text-2xl font-bold">Сканлайт Маркетинг</div>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/50">
-              Маркетинговое направление компании Сканлайт. Сайты, реклама и
-              продвижение для розницы, складов и B2B.
-            </p>
-          </div>
-
-          <div>
-            <div className="mb-4 text-sm font-bold uppercase tracking-[.16em] text-white/35">
-              Навигация
-            </div>
-            <div className="grid gap-3 text-sm font-bold text-white/60">
-              <Link href="/marketing/uslugi" className="hover:text-[#B6FF00]">
-                Услуги
-              </Link>
-              <Link href="/marketing/keys" className="hover:text-[#B6FF00]">
-                Кейсы
-              </Link>
-              <Link href="/marketing/o-nas" className="hover:text-[#B6FF00]">
-                Кто мы
-              </Link>
-              <Link href="/marketing/blog" className="hover:text-[#B6FF00]">
-                Блог
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <div className="mb-4 text-sm font-bold uppercase tracking-[.16em] text-white/35">
-              Основной сайт
-            </div>
-            <Link
-              href="/"
-              className="text-sm font-bold text-white/60 hover:text-[#B6FF00]"
-            >
-              scan-lite.ru
-            </Link>
-            <p className="mt-3 text-sm text-white/35">
-              Торгово-кассовое оборудование
-            </p>
-          </div>
-        </div>
-
-        <div className="border-t border-white/10 px-6 py-5 text-center text-xs text-white/35">
-          © 2026 Сканлайт · scan-lite.ru
-        </div>
-      </footer>
     </main>
   )
 }
